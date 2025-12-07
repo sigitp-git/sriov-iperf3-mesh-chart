@@ -1,0 +1,21 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: n3-1002-numa1p1-pf4
+  annotations:
+    k8s.v1.cni.cncf.io/resourceName: aws-cse-lc-bundle/mlnx_sriov_netdevice
+spec:
+  config: '{
+  "type": "sriov",
+  "cniVersion": "0.3.1",
+  "name": "sriov-network",
+  "vlan": 1002,
+  "logLevel": "debug",
+  "ipam": {
+        "type": "static",
+        "addresses": [{"address": "169.30.1.100/24"}],
+            "169.30.2.1/32",
+            "169.30.2.254/32"
+            ]
+      }
+}'

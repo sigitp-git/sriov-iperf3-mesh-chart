@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod-static-test
+  annotations:
+    k8s.v1.cni.cncf.io/networks: sriov-static-test
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-181.ec2.internal
+  containers:
+  - name: mg-pod
+    image: ubuntu:20.04
+    command: ["sleep", "infinity"]
+    resources:
+      requests:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 1
+      limits:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 1

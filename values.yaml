@@ -1,0 +1,85 @@
+# SR-IOV Mesh Testing Configuration
+nodes:
+  node1: "ip-100-77-4-181.ec2.internal"
+  node2: "ip-100-77-4-183.ec2.internal"
+
+# SR-IOV Resource Configuration
+sriov:
+  resource: "aws-cse-lc-bundle/mlnx_sriov_netdevice"
+  
+# Network Attachment Definitions
+networks:
+  # Unique IP networks for mesh pods
+  n3_unique_10:
+    vlan: 3
+    ip: "169.30.1.10/24"
+  n3_unique_20:
+    vlan: 3
+    ip: "169.30.1.20/24"
+  n3_unique_30:
+    vlan: 3
+    ip: "169.30.1.30/24"
+  n3_unique_40:
+    vlan: 3
+    ip: "169.30.1.40/24"
+  
+  # Standard networks
+  n3_1001:
+    vlan: 3
+    ip: "169.30.1.100/24"
+  n4_201:
+    vlan: 4
+    ip: "169.30.1.100/24"
+  n6_2001:
+    vlan: 6
+    ip: "169.30.1.100/24"
+  dsf_301:
+    vlan: 301
+    ip: "169.30.1.100/24"
+
+# Pod Configuration
+pods:
+  # Mesh pods with unique IPs (Node1)
+  mesh:
+    enabled: true
+    count: 3
+    node: node1
+    networks: ["n3_unique_20", "n3_unique_30", "n3_unique_40"]
+    
+  # Load Balancer BGP pods
+  lb_bgp:
+    enabled: true
+    node1_count: 3
+    node2_count: 3
+    networks: ["n3_1001", "n4_201", "n6_2001"]
+    
+  # Management pods
+  mg:
+    enabled: true
+    node1_count: 20
+    node2_count: 20
+    networks: ["n3_1001", "dsf_301"]
+
+# iperf3 Testing Configuration
+testing:
+  enabled: true
+  mesh:
+    streams: 24
+    duration: 20
+    interval: 15
+  continuous: true
+  
+# Container Configuration
+image:
+  repository: "ubuntu"
+  tag: "20.04"
+  pullPolicy: IfNotPresent
+
+# Resource Configuration
+resources:
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+  requests:
+    memory: "256Mi"
+    cpu: "100m"

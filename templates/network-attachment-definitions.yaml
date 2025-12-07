@@ -1,0 +1,21 @@
+{{- range $name, $config := .Values.networks }}
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{ $name | replace "_" "-" }}
+  annotations:
+    k8s.v1.cni.cncf.io/resourceName: {{ $.Values.sriov.resource }}
+spec:
+  config: |
+    {
+      "type": "sriov",
+      "cniVersion": "0.3.1",
+      "name": "sriov-network",
+      "vlan": {{ $config.vlan }},
+      "ipam": {
+        "type": "static",
+        "addresses": [{"address": "{{ $config.ip }}"}]
+      }
+    }
+{{- end }}

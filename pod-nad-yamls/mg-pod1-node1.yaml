@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod1-node1
+  annotations:
+    k8s.v1.cni.cncf.io/networks: dsf-301-numa1p0-pf3, dsf-302-numa1p1-pf4
+spec:
+  containers:
+  - name:  ubuntu-netutils
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-netutils
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]
+    resources:
+      requests:
+        cpu: 1
+        memory: 1Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+      limits:
+        cpu: 1
+        memory: 1Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-181.ec2.internal

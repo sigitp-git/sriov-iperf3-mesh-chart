@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod4-node1-fixed
+  annotations:
+    k8s.v1.cni.cncf.io/networks: dsf-301-unique1, dsf-301-unique2, dsf-302-unique1, dsf-302-unique2
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-181.ec2.internal
+  containers:
+  - name: ubuntu-netutils
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-netutils
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+    resources:
+      requests:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 4
+      limits:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 4

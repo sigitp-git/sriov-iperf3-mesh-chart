@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sriov-sriov-2.8.1-c35e4697ef6b4ec70cec80ce3e2b64b339383b90-config
+  namespace: kube-system
+data:
+  dp-conf.json: |
+    {
+        "resourceList": [
+            {
+                "resourceName": "bmn-mlx-sriov-pf1",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0000:02:00.0"
+                    ],
+                    "isRdma": true
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf2",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0000:02:00.1"
+                    ],
+                    "isRdma": true
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf3",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0001:16:00.0"
+                    ],
+                    "isRdma": true
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf4",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0001:16:00.1"
+                    ],
+                    "isRdma": true
+                }
+            }
+        ]
+    }

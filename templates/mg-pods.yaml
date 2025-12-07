@@ -1,0 +1,49 @@
+{{- if .Values.pods.mg.enabled }}
+{{- range $nodeType := list "node1" "node2" }}
+{{- $nodeHostname := index $.Values.nodes $nodeType }}
+{{- $podCount := index $.Values.pods.mg (printf "%s_count" $nodeType) }}
+{{- range $i := until ($podCount | int) }}
+{{- $podNum := add $i 1 }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod{{ $podNum }}-{{ $nodeType }}
+  labels:
+    app: sriov-mesh
+    type: mg
+    node: {{ $nodeHostname }}
+  annotations:
+    k8s.v1.cni.cncf.io/networks: n3-1001-numa0p0-pf1
+spec:
+  containers:
+  - name: iperf3
+    image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+    command: ["sleep", "infinity"]
+    resources:
+      limits:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.limits.memory }}
+        cpu: {{ $.Values.resources.limits.cpu }}
+      requests:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.requests.memory }}
+        cpu: {{ $.Values.resources.requests.cpu }}
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
+      privileged: true
+    lifecycle:
+      postStart:
+        exec:
+          command:
+          - /bin/bash
+          - -c
+          - |
+            apt update && apt install -y iperf3 iputils-ping iproute2 net-tools
+  nodeSelector:
+    kubernetes.io/hostname: {{ $nodeHostname }}
+  restartPolicy: Always
+{{- end }}
+{{- end }}
+{{- end }}

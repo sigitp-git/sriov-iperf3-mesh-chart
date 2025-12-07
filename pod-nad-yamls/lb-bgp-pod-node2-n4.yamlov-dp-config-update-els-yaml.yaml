@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lb-bgp-pod-node2-n4
+  annotations:
+    k8s.v1.cni.cncf.io/networks: n4-3001-numa0p0-pf1, n4-3002-numa0p1-pf2
+spec:
+  containers:
+  - name:  ubuntu-frr
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-frr
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["CAP_NET_RAW", "NET_ADMIN", "SYS_TIME"]
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]
+    resources:
+      requests:
+        cpu: 16
+        memory: 32Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+      limits:
+        cpu: 16
+        memory: 32Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-183.ec2.internal

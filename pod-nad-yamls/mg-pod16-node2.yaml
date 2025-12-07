@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod16-node2
+  annotations:
+    k8s.v1.cni.cncf.io/networks: n3-1001-numa0p0-pf1
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-183.ec2.internal
+  containers:
+  - name: ubuntu-netutils
+    image: ubuntu:20.04
+    command: ["sleep", "infinity"]
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+    resources:
+      requests:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 1
+      limits:
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: 1

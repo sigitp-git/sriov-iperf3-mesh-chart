@@ -1,0 +1,9 @@
+{
+       “type”: “sriov”,
+       “cniVersion”: “0.3.1",
+       “name”: “sriov-net-0",
+       “spoofchk”: “off”,
+       “trust”: “on”,
+       “vlan_trunk”: “10-40,159-162,1000-2000",
+       “ipam”: {}
+   }

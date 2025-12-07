@@ -1,0 +1,63 @@
+SR-IOV Mesh Testing Pods Deployed Successfully!
+
+{{- if .Values.testing.enabled }}
+🚀 24/7 iperf3 Mesh Testing is ACTIVE
+
+Node1 ({{ .Values.nodes.node1 }}):
+- 3 mesh pods with unique IPs (169.30.1.20/30/40)
+- Expected throughput: 35+ Gbps per connection
+- Optimized configuration: {{ .Values.testing.mesh.streams }} streams, {{ .Values.testing.mesh.duration }}s duration
+
+Node2 ({{ .Values.nodes.node2 }}):
+- 3 lb-bgp pods with shared IP (169.30.1.100)
+- Standard mesh testing configuration
+
+📊 Monitoring Commands:
+  # Monitor Node1 optimized mesh
+  kubectl exec mesh-pod-2 -- tail -f /tmp/optimized.log
+  
+  # Monitor Node2 mesh activity
+  kubectl exec lb-bgp-pod-node2-n1 -- tail -f /tmp/node2-mesh.log
+  
+  # Check process count
+  kubectl exec mesh-pod-2 -- ps aux | grep iperf3 | wc -l
+
+🛑 Stop Testing:
+  # Stop Node1 mesh testing
+  for pod in mesh-pod-2 mesh-pod-3 mesh-pod-4; do
+    kubectl exec $pod -- pkill -f iperf3
+  done
+  
+  # Stop Node2 mesh testing
+  for pod in lb-bgp-pod-node2-n1 lb-bgp-pod-node2-n2 lb-bgp-pod-node2-n3; do
+    kubectl exec $pod -- pkill -f node2-mesh
+  done
+
+{{- else }}
+⚠️  iperf3 Testing is DISABLED
+To enable testing, set testing.enabled=true in values.yaml
+{{- end }}
+
+📋 Deployed Resources:
+- Network Attachment Definitions: {{ len .Values.networks }}
+{{- if .Values.pods.mesh.enabled }}
+- Mesh Pods (Node1): {{ .Values.pods.mesh.count }}
+{{- end }}
+{{- if .Values.pods.lb_bgp.enabled }}
+- LB-BGP Pods (Node1): {{ .Values.pods.lb_bgp.node1_count }}
+- LB-BGP Pods (Node2): {{ .Values.pods.lb_bgp.node2_count }}
+{{- end }}
+{{- if .Values.pods.mg.enabled }}
+- MG Pods (Node1): {{ .Values.pods.mg.node1_count }}
+- MG Pods (Node2): {{ .Values.pods.mg.node2_count }}
+{{- end }}
+
+🔧 Quick Commands:
+  # Check all pods
+  kubectl get pods -l app=sriov-mesh
+  
+  # Test throughput manually
+  kubectl exec mesh-pod-2 -- iperf3 -c 169.30.1.30 -p 5202 -t 10 -P 16
+  
+  # Upgrade deployment
+  helm upgrade sriov-mesh ./sriov-mesh-chart

@@ -1,0 +1,80 @@
+{{- if .Values.pods.mesh.enabled }}
+{{- range $i := until (.Values.pods.mesh.count | int) }}
+{{- $podIndex := add $i 2 }}
+{{- $networkIndex := $i }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mesh-pod-{{ $podIndex }}
+  labels:
+    app: sriov-mesh
+    type: mesh
+    node: {{ $.Values.nodes.node1 }}
+  annotations:
+    k8s.v1.cni.cncf.io/networks: {{ index $.Values.pods.mesh.networks $networkIndex | replace "_" "-" }}
+spec:
+  containers:
+  - name: iperf3
+    image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+    command: ["sleep", "infinity"]
+    resources:
+      limits:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.limits.memory }}
+        cpu: {{ $.Values.resources.limits.cpu }}
+      requests:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.requests.memory }}
+        cpu: {{ $.Values.resources.requests.cpu }}
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
+      privileged: true
+    lifecycle:
+      postStart:
+        exec:
+          command:
+          - /bin/bash
+          - -c
+          - |
+            apt update && apt install -y iperf3 iputils-ping iproute2 net-tools
+            {{- if $.Values.testing.enabled }}
+            cat > /tmp/optimized-mesh.sh << 'EOF'
+            #!/bin/bash
+            PODS=("mesh-pod-2" "mesh-pod-3" "mesh-pod-4")
+            IPS=("169.30.1.20" "169.30.1.30" "169.30.1.40")
+            
+            MY_POD=$(hostname)
+            for i in "${!PODS[@]}"; do
+                if [ "${PODS[$i]}" = "$MY_POD" ]; then
+                    port=$((5201 + i))
+                    iperf3 -s -p $port -D
+                    break
+                fi
+            done
+            
+            while true; do
+                echo "$(date): $MY_POD optimized mesh test..."
+                
+                for i in "${!PODS[@]}"; do
+                    if [ "${PODS[$i]}" != "$MY_POD" ]; then
+                        server_ip=${IPS[$i]}
+                        port=$((5201 + i))
+                        
+                        iperf3 -c $server_ip -p $port -t {{ $.Values.testing.mesh.duration }} -P {{ $.Values.testing.mesh.streams }} > /dev/null 2>&1 &
+                    fi
+                done
+                
+                wait
+                sleep {{ $.Values.testing.mesh.interval }}
+            done
+            EOF
+            chmod +x /tmp/optimized-mesh.sh
+            nohup /tmp/optimized-mesh.sh > /tmp/optimized.log 2>&1 &
+            {{- end }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ $.Values.nodes.node1 }}
+  restartPolicy: Always
+{{- end }}
+{{- end }}

@@ -1,0 +1,81 @@
+{{- if .Values.pods.lb_bgp.enabled }}
+{{- $networks := list "n3-1001-numa0p0-pf1" "n4-201-numa1p0-pf3" "n6-2001-numa0p0-pf1" }}
+{{- range $nodeType := list "node1" "node2" }}
+{{- $nodeHostname := index $.Values.nodes $nodeType }}
+{{- $podCount := index $.Values.pods.lb_bgp (printf "%s_count" $nodeType) }}
+{{- range $i := until ($podCount | int) }}
+{{- $networkName := index $networks $i }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lb-bgp-pod-{{ $nodeType }}-{{ add $i 1 | printf "n%d" }}
+  labels:
+    app: sriov-mesh
+    type: lb-bgp
+    node: {{ $nodeHostname }}
+  annotations:
+    k8s.v1.cni.cncf.io/networks: {{ $networkName }}
+spec:
+  containers:
+  - name: iperf3
+    image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+    command: ["sleep", "infinity"]
+    resources:
+      limits:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.limits.memory }}
+        cpu: {{ $.Values.resources.limits.cpu }}
+      requests:
+        {{ $.Values.sriov.resource }}: 1
+        memory: {{ $.Values.resources.requests.memory }}
+        cpu: {{ $.Values.resources.requests.cpu }}
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
+      privileged: true
+    lifecycle:
+      postStart:
+        exec:
+          command:
+          - /bin/bash
+          - -c
+          - |
+            apt update && apt install -y iperf3 iputils-ping iproute2 net-tools
+            {{- if and $.Values.testing.enabled (eq $nodeType "node2") }}
+            cat > /tmp/node2-mesh.sh << 'EOF'
+            #!/bin/bash
+            PODS=("lb-bgp-pod-node2-n1" "lb-bgp-pod-node2-n2" "lb-bgp-pod-node2-n3")
+            
+            MY_POD=$(hostname)
+            for i in "${!PODS[@]}"; do
+                if [[ "$MY_POD" == *"n$((i+1))" ]]; then
+                    port=$((6201 + i))
+                    iperf3 -s -p $port -D
+                    break
+                fi
+            done
+            
+            while true; do
+                echo "$(date): $MY_POD (node2) mesh test..."
+                
+                for i in "${!PODS[@]}"; do
+                    if [[ "$MY_POD" != *"n$((i+1))" ]]; then
+                        port=$((6201 + i))
+                        iperf3 -c 169.30.1.100 -p $port -t 20 -P 16 > /dev/null 2>&1 &
+                    fi
+                done
+                
+                wait
+                sleep 30
+            done
+            EOF
+            chmod +x /tmp/node2-mesh.sh
+            nohup /tmp/node2-mesh.sh > /tmp/node2-mesh.log 2>&1 &
+            {{- end }}
+  nodeSelector:
+    kubernetes.io/hostname: {{ $nodeHostname }}
+  restartPolicy: Always
+{{- end }}
+{{- end }}
+{{- end }}

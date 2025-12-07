@@ -1,0 +1,14 @@
+apiVersion: v2
+name: sriov-iperf3-mesh-chart
+description: SR-IOV Mesh Testing Pods with Automated iperf3 Traffic Generation
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - sriov
+  - networking
+  - performance
+  - iperf3
+maintainers:
+  - name: EKS Outposts Team
+    email: eks-outposts@example.com

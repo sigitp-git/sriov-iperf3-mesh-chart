@@ -1,0 +1,8 @@
+[
+    {
+        "name": "sriov",
+        "version": "latest",
+        "resolveConflicts": "overwrite",
+        "configurationValues": "labels:\n    nodeSelector: \n        <any>:<any> \nconfig:\n    sriov_device_plugin:\n        resourceList:\n            - resourceName: bmn-mlx-sriov-pf1\n              resourcePrefix: kinara.com\n              selectors:\n                    vendors:\n                    - 15b3\n                    devices:\n                    - 101e\n                    drivers:\n                    - mlx5_core\n                    rootDevices:\n                    - '0000:05:00.0'\n            - resourceName: bmn-mlx-sriov-pf2\n              resourcePrefix: kinara.com\n              selectors:\n                    vendors:\n                    - 15b3\n                    devices:\n                    - 101e\n                    drivers:\n                    - mlx5_core\n                    rootDevices:\n                    - '0000:05:00.1'\n            - resourceName: bmn-mlx-sriov-pf3\n              resourcePrefix: kinara.com\n              selectors:\n                    vendors:\n                    - 15b3\n                    devices:\n                    - 101e\n                    drivers:\n                    - mlx5_core\n                    rootDevices:\n                    - '0001:05:00.0'\n            - resourceName: bmn-mlx-sriov-pf4\n              resourcePrefix: kinara.com\n              selectors:\n                    vendors:\n                    - 15b3\n                    devices:\n                    - 101e\n                    drivers:\n                    - mlx5_core\n                    rootDevices:\n                    - '0001:05:00.1'"
+    }
+]

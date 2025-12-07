@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mlnx-dpdk-1001-1002-node2-tx
+  annotations:
+    k8s.v1.cni.cncf.io/networks: n3-1001-numa1p0-pf3, n3-1002-numa1p1-pf4
+spec:
+  containers:
+  - name:  ubuntu-mlnx-dpdk
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-mlnx-dpdk-amd64
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["CAP_NET_RAW", "NET_ADMIN", "SYS_TIME"]
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]
+    volumeMounts:
+    - mountPath: /hugepages
+      name: hugepage
+    resources:
+      requests:
+        cpu: 33
+        memory: 32Gi
+        hugepages-1Gi: 8Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+      limits:
+        cpu: 33
+        memory: 32Gi
+        hugepages-1Gi: 8Gi
+        aws-cse-lc-bundle/mlnx_sriov_netdevice: '2'
+  volumes:
+  - name: hugepage
+    emptyDir:
+      medium: HugePages
+  nodeSelector:
+    kubernetes.io/hostname: ip-100-77-4-183.ec2.internal

@@ -1,0 +1,274 @@
+# eksctl update addon -f config.yaml
+
+--------------------------------------------------------
+
+# ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriov-sriov-0.1.1-eksbuild.preview-config -n kube-system -o yaml
+apiVersion: v1
+data:
+  dp-conf.json: '{"resourceList":[{"resourceName":"bmn-mlx-sriov-pf1","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf2","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.1"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf3","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf4","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.1"],"vendors":["15b3"]}}]}'
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-10-08T23:26:51Z"
+  name: sriov-sriov-0.1.1-eksbuild.preview-config
+  namespace: kube-system
+  resourceVersion: "57783762"
+  uid: 7274c8e9-3a57-49bd-8db7-10a498342def
+ubuntu@cloud9-sigitp2:~/environment$
+
+--------------------------------------------------------
+
+# ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriov-sriov-0.1.1-eksbuild.preview-config -n kube-system -o yaml
+apiVersion: v1
+data:
+  dp-conf.json: '{"resourceList":[{"resourceName":"bmn-mlx-sriov-pf1","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf2","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.1"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf3","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf4","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.1"],"vendors":["15b3"]}}]}'
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-10-08T23:26:51Z"
+  name: sriov-sriov-0.1.1-eksbuild.preview-config
+  namespace: kube-system
+  resourceVersion: "57783762"
+  uid: 7274c8e9-3a57-49bd-8db7-10a498342def
+ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriov-sriov-0.1.1-eksbuild.preview-config -n kube-system -o yaml | jq
+parse error: Invalid numeric literal at line 1, column 11
+ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriov-sriov-0.1.1-eksbuild.preview-config -n kube-system
+NAME                                        DATA   AGE
+sriov-sriov-0.1.1-eksbuild.preview-config   1      233d
+ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriov-sriov-0.1.1-eksbuild.preview-config -n kube-system -o yaml
+apiVersion: v1
+data:
+  dp-conf.json: '{"resourceList":[{"resourceName":"bmn-mlx-sriov-pf1","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf2","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0000:02:00.1"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf3","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.0"],"vendors":["15b3"]}},{"resourceName":"bmn-mlx-sriov-pf4","resourcePrefix":"kinara.com","selectors":{"devices":["101e"],"drivers":["mlx5_core"],"isRdma":true,"rootDevices":["0001:16:00.1"],"vendors":["15b3"]}}]}'
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-10-08T23:26:51Z"
+  name: sriov-sriov-0.1.1-eksbuild.preview-config
+  namespace: kube-system
+  resourceVersion: "57783762"
+  uid: 7274c8e9-3a57-49bd-8db7-10a498342def
+ubuntu@cloud9-sigitp2:~/environment$ kubectl get cm sriovdp-config -n kube-system -o yaml
+apiVersion: v1
+data:
+  config.json: |
+    {
+        "resourceList": [
+            {
+                "resourceName": "bmn-mlx-sriov-pf1",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0000:02:00.0"
+                    ]
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf2",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0000:02:00.1"
+                    ]
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf3",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0001:16:00.0"
+                    ]
+                }
+            },
+            {
+                "resourceName": "bmn-mlx-sriov-pf4",
+                "resourcePrefix": "kinara.com",
+                "selectors": {
+                    "vendors": [
+                        "15b3"
+                    ],
+                    "devices": [
+                        "101e"
+                    ],
+                    "drivers": [
+                        "mlx5_core"
+                    ],
+                    "rootDevices": [
+                        "0001:16:00.1"
+                    ]
+                }
+            }
+        ]
+    }
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"config.json":"{\n    \"resourceList\": [\n        {\n            \"resourceName\": \"bmn-mlx-sriov-pf1\",\n            \"resourcePrefix\": \"kinara.com\",\n            \"selectors\": {\n                \"vendors\": [\n                    \"15b3\"\n                ],\n                \"devices\": [\n                    \"101e\"\n                ],\n                \"drivers\": [\n                    \"mlx5_core\"\n                ],\n                \"rootDevices\": [\n                    \"0000:02:00.0\"\n                ]\n            }\n        },\n        {\n            \"resourceName\": \"bmn-mlx-sriov-pf2\",\n            \"resourcePrefix\": \"kinara.com\",\n            \"selectors\": {\n                \"vendors\": [\n                    \"15b3\"\n                ],\n                \"devices\": [\n                    \"101e\"\n                ],\n                \"drivers\": [\n                    \"mlx5_core\"\n                ],\n                \"rootDevices\": [\n                    \"0000:02:00.1\"\n                ]\n            }\n        },\n        {\n            \"resourceName\": \"bmn-mlx-sriov-pf3\",\n            \"resourcePrefix\": \"kinara.com\",\n            \"selectors\": {\n                \"vendors\": [\n                    \"15b3\"\n                ],\n                \"devices\": [\n                    \"101e\"\n                ],\n                \"drivers\": [\n                    \"mlx5_core\"\n                ],\n                \"rootDevices\": [\n                    \"0001:16:00.0\"\n                ]\n            }\n        },\n        {\n            \"resourceName\": \"bmn-mlx-sriov-pf4\",\n            \"resourcePrefix\": \"kinara.com\",\n            \"selectors\": {\n                \"vendors\": [\n                    \"15b3\"\n                ],\n                \"devices\": [\n                    \"101e\"\n                ],\n                \"drivers\": [\n                    \"mlx5_core\"\n                ],\n                \"rootDevices\": [\n                    \"0001:16:00.1\"\n                ]\n            }\n        }\n    ]\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"sriovdp-config","namespace":"kube-system"}}
+  creationTimestamp: "2024-09-12T17:42:52Z"
+  name: sriovdp-config
+  namespace: kube-system
+  resourceVersion: "57783728"
+  uid: ff6146c4-b0a5-425a-af6b-d619d578d270
+ubuntu@cloud9-sigitp2:~/environment$
+
+--------------------------------------------------------
+
+# config.yaml
+
+addons:
+- name: sriov
+  version: latest
+  resolveConflicts: overwrite
+  configurationValues: |-
+    labels:
+        nodeSelector: 
+            <any>:<any> 
+    config:
+        sriov_device_plugin:
+            resourceList:
+                - resourceName: <string - required>
+                  selectors:
+                      vendors:
+                          - <vendor-id>
+                      devices:
+                          - <device-id>
+                      drivers:
+                          - <driver>
+                      pciAddresses:
+                          - <pci-addresses>
+                      pfNames:
+                          - <pf names>
+                      rootDevices:
+                          - <root-devices>
+
+            ------
+                - resourceName: bmn-mlx-sriov-pf1
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0000:02:00.0'
+                - resourceName: bmn-mlx-sriov-pf2
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0000:02:00.1'
+                - resourceName: bmn-mlx-sriov-pf3
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0001:16:00.0'
+                - resourceName: bmn-mlx-sriov-pf4
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0001:16:00.1'
+
+
+--------------------------------------------------------
+
+# config.yaml
+
+addons:
+- name: sriov
+  version: latest
+  resolveConflicts: overwrite
+  configurationValues: |-
+    labels:
+        nodeSelector: 
+            <any>:<any> 
+    config:
+        sriov_device_plugin:
+            resourceList:
+                - resourceName: bmn-mlx-sriov-pf1
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0000:02:00.0'
+                - resourceName: bmn-mlx-sriov-pf2
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0000:02:00.1'
+                - resourceName: bmn-mlx-sriov-pf3
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0001:16:00.0'
+                - resourceName: bmn-mlx-sriov-pf4
+                  resourcePrefix: kinara.com
+                  selectors:
+                        vendors:
+                        - 15b3
+                        devices:
+                        - 101e
+                        drivers:
+                        - mlx5_core
+                        rootDevices:
+                        - '0001:16:00.1'
