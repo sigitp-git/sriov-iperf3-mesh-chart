@@ -9,103 +9,103 @@ sriov:
   
 # Network Attachment Definitions - Non-overlapping IP ranges
 networks:
-  # Unique IP networks for mesh pods (169.30.1.x/24)
+  # Unique IP networks for mesh pods
   n3_unique_10:
     vlan: 3
-    ip: "169.30.1.10/24"
+    ip: "169.30.1.0/24"
   n3_unique_20:
     vlan: 3
-    ip: "169.30.1.20/24"
+    ip: "169.30.2.0/24"
   n3_unique_30:
     vlan: 3
-    ip: "169.30.1.30/24"
+    ip: "169.30.3.0/24"
   n3_unique_40:
     vlan: 3
-    ip: "169.30.1.40/24"
+    ip: "169.30.4.0/24"
   
   # Standard networks with unique subnets
   n3_1001:
     vlan: 3
-    ip: "169.30.2.100/24"    # 169.30.2.x subnet
+    ip: "169.30.5.0/24"
   n4_201:
     vlan: 4
-    ip: "169.30.3.100/24"    # 169.30.3.x subnet
+    ip: "169.30.6.0/24"
   n6_2001:
     vlan: 6
-    ip: "169.30.4.100/24"    # 169.30.4.x subnet
+    ip: "169.30.7.0/24"
   dsf_301:
     vlan: 301
-    ip: "169.30.5.100/24"    # 169.30.5.x subnet
+    ip: "169.30.8.0/24"
   
   # NUMA-specific NADs - DSF VLAN 301/302
   dsf_301_numa0p0_pf1:
     vlan: 301
-    ip: "169.30.6.10/24"
+    ip: "169.30.9.0/24"
   dsf_301_numa1p0_pf3:
     vlan: 301
-    ip: "169.30.6.20/24"
+    ip: "169.30.10.0/24"
   dsf_302_numa0p1_pf2:
     vlan: 302
-    ip: "169.30.7.10/24"
+    ip: "169.30.11.0/24"
   dsf_302_numa1p1_pf4:
     vlan: 302
-    ip: "169.30.7.20/24"
+    ip: "169.30.12.0/24"
   
   # NUMA-specific NADs - N3 VLAN 1001/1002
   n3_1001_numa0p0_pf1:
     vlan: 1001
-    ip: "169.30.8.10/24"
+    ip: "169.30.13.0/24"
   n3_1001_numa1p0_pf3:
     vlan: 1001
-    ip: "169.30.8.20/24"
+    ip: "169.30.14.0/24"
   n3_1002_numa0p1_pf2:
     vlan: 1002
-    ip: "169.30.9.10/24"
+    ip: "169.30.15.0/24"
   n3_1002_numa1p1_pf4:
     vlan: 1002
-    ip: "169.30.9.20/24"
+    ip: "169.30.16.0/24"
   
   # NUMA-specific NADs - N4 VLAN 201/202
   n4_201_numa0p0_pf1:
     vlan: 201
-    ip: "169.30.10.10/24"
+    ip: "169.30.17.0/24"
   n4_201_numa1p0_pf3:
     vlan: 201
-    ip: "169.30.10.20/24"
+    ip: "169.30.18.0/24"
   n4_202_numa0p1_pf2:
     vlan: 202
-    ip: "169.30.11.10/24"
+    ip: "169.30.19.0/24"
   n4_202_numa1p1_pf4:
     vlan: 202
-    ip: "169.30.11.20/24"
+    ip: "169.30.20.0/24"
   
   # NUMA-specific NADs - N4 VLAN 3001/3002
   n4_3001_numa0p0_pf1:
     vlan: 3001
-    ip: "169.30.12.10/24"
+    ip: "169.30.21.0/24"
   n4_3001_numa1p0_pf3:
     vlan: 3001
-    ip: "169.30.12.20/24"
+    ip: "169.30.22.0/24"
   n4_3002_numa0p1_pf2:
     vlan: 3002
-    ip: "169.30.13.10/24"
+    ip: "169.30.23.0/24"
   n4_3002_numa1p1_pf4:
     vlan: 3002
-    ip: "169.30.13.20/24"
+    ip: "169.30.24.0/24"
   
   # NUMA-specific NADs - N6 VLAN 2001/2002
   n6_2001_numa0p0_pf1:
     vlan: 2001
-    ip: "169.30.14.10/24"
+    ip: "169.30.25.0/24"
   n6_2001_numa1p0_pf3:
     vlan: 2001
-    ip: "169.30.14.20/24"
+    ip: "169.30.26.0/24"
   n6_2002_numa0p1_pf2:
     vlan: 2002
-    ip: "169.30.15.10/24"
+    ip: "169.30.27.0/24"
   n6_2002_numa1p1_pf4:
     vlan: 2002
-    ip: "169.30.15.20/24"
+    ip: "169.30.28.0/24"
 
 # Pod Configuration
 pods:
