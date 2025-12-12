@@ -1,3 +1,0 @@
-✅ Target: 5 Gbps (-b 5G)
-✅ 16 streams (-P 16)
-✅ Infinite duration (-t 0)

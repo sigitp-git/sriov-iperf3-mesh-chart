@@ -1,0 +1,10 @@
+✅ Target: 10 Gbps (-b 10G)
+✅ 16 streams (-P 16)
+✅ Infinite duration (-t 0)
+
+- full mesh traffic processes must not run on localhost, but the processes must run on the mesh, load balancer (lb), and media gateway (mg) pods
+- full mesh traffic must be executed between mesh, load balancer (lb), and media gateway (mg) pods
+- full mesh iperf3 client and server pairs must actively exchange traffic
+- full mesh iperf3 celint and server pairs placed randomly between all mesh, load balancer (lb), and media gateway (mg) pods
+- full mesh between worker nodes for VPC-CNI interfaces (eth0)
+- full mesh within the worker node for SRIOV interfaces (net1)

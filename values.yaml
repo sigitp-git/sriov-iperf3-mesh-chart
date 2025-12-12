@@ -1,15 +1,15 @@
 # SR-IOV Mesh Testing Configuration
 nodes:
-  node1: "ip-100-77-4-181.ec2.internal"
-  node2: "ip-100-77-4-183.ec2.internal"
+  node1: "ip-100-77-4-14.ec2.internal"
+  node2: "ip-100-77-4-157.ec2.internal"
 
 # SR-IOV Resource Configuration
 sriov:
-  resource: "aws-cse-lc-bundle/mlnx_sriov_netdevice"
+  resource: "openshift.io/mlnx_sriov_netdevice"
   
-# Network Attachment Definitions
+# Network Attachment Definitions - Non-overlapping IP ranges
 networks:
-  # Unique IP networks for mesh pods
+  # Unique IP networks for mesh pods (169.30.1.x/24)
   n3_unique_10:
     vlan: 3
     ip: "169.30.1.10/24"
@@ -23,19 +23,19 @@ networks:
     vlan: 3
     ip: "169.30.1.40/24"
   
-  # Standard networks
+  # Standard networks with unique subnets
   n3_1001:
     vlan: 3
-    ip: "169.30.1.100/24"
+    ip: "169.30.2.100/24"    # 169.30.2.x subnet
   n4_201:
     vlan: 4
-    ip: "169.30.1.100/24"
+    ip: "169.30.3.100/24"    # 169.30.3.x subnet
   n6_2001:
     vlan: 6
-    ip: "169.30.1.100/24"
+    ip: "169.30.4.100/24"    # 169.30.4.x subnet
   dsf_301:
     vlan: 301
-    ip: "169.30.1.100/24"
+    ip: "169.30.5.100/24"    # 169.30.5.x subnet
 
 # Pod Configuration
 pods:
