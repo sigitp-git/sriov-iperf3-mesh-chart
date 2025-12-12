@@ -12,10 +12,10 @@ This directory contains optimized scripts for generating full mesh iperf3 traffi
 
 ## Traffic Profile
 
-Updated to 10 Gbps bandwidth (previously 5 Gbps):
+Updated to 20 Gbps bandwidth (previously 5 Gbps):
 
-- ✅ **10 Gbps per connection** (`-b 10G`)
-- ✅ **16 parallel streams** (`-P 16`)
+- ✅ **20 Gbps per connection** (`-b 20G`)
+- ✅ **16 parallel streams** (`-P 32`)
 - ✅ **Infinite duration** (`-t 0`)
 - ✅ **Full mesh topology** - Every pod connects to every other pod
 - ✅ **Dual interface** - VPC-CNI (eth0) + SR-IOV (net1)
@@ -41,8 +41,8 @@ Starts full mesh iperf3 traffic across all 49 pods.
 **Performance:**
 - Localhost CPU: Minimal (only 49 kubectl processes)
 - Pod CPU: Distributed across all pods
-- Network throughput: 10 Gbps per pod pair per interface
-- Total mesh capacity: ~235 Tbps (49 pods × 48 connections × 2 interfaces × 10 Gbps)
+- Network throughput: 20 Gbps per pod pair per interface
+- Total mesh capacity: ~470 Tbps (49 pods × 48 connections × 2 interfaces × 20 Gbps)
 
 ## Architecture
 
@@ -53,9 +53,9 @@ Localhost (minimal CPU)
 └── ... (49 total kubectl processes)
 
 Pod1 (runs all connection logic internally)
-├── iperf3 -c pod2_eth0 -p 5201 -b 10G -P 16 -t 0
-├── iperf3 -c pod2_net1 -p 5202 -b 10G -P 16 -t 0
-├── iperf3 -c pod3_eth0 -p 5201 -b 10G -P 16 -t 0
+├── iperf3 -c pod2_eth0 -p 5201 -b 20G -P 32 -t 0
+├── iperf3 -c pod2_net1 -p 5202 -b 20G -P 32 -t 0
+├── iperf3 -c pod3_eth0 -p 5201 -b 20G -P 32 -t 0
 └── ... (96 iperf3 clients per pod)
 ```
 
@@ -112,11 +112,11 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -s'
 
 ## Version History
 
-- **v3.0** (2025-12-12): Optimized for zero localhost CPU consumption + 10 Gbps bandwidth
+- **v3.0** (2025-12-12): Optimized for zero localhost CPU consumption + 20 Gbps bandwidth
   - Single kubectl exec per pod
   - All connection logic runs inside pods
   - Successfully handles 49 pods × 48 connections × 2 interfaces
-  - Increased bandwidth from 5 Gbps to 10 Gbps per connection
+  - Increased bandwidth from 5 Gbps to 20 Gbps per connection
   
 - **v2.0** (deprecated): Multiple kubectl exec per connection - caused localhost CPU overload
 - **v1.0** (deprecated): Initial implementation - caused system hangs

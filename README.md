@@ -28,11 +28,11 @@ sriov-iperf3-mesh-chart/
 ## Features
 
 - ✅ **Complete 49-pod deployment** - mesh, lb-bgp, and mg pods across 2 nodes
-- ✅ **10 Gbps full mesh traffic** - 49 pods × 48 connections × 2 interfaces
+- ✅ **20 Gbps full mesh traffic** - 49 pods × 48 connections × 2 interfaces
 - ✅ **Dual-interface support** - VPC-CNI (eth0) + SR-IOV (net1)
 - ✅ **Zero localhost CPU consumption** - Optimized script architecture
 - ✅ **Minimal kubectl overhead** - Only 49 processes for full mesh
-- ✅ **Traffic profile compliance** - 10 Gbps, 16 streams, infinite duration
+- ✅ **Traffic profile compliance** - 20 Gbps, 32 streams, infinite duration
 
 ## Quick Start
 
@@ -43,7 +43,7 @@ cd /home/ubuntu/sriov-iperf3-mesh-chart
 # Deploy complete SR-IOV iperf3 mesh environment (49 pods)
 helm install sriov-iperf3-mesh .
 
-# Start full mesh traffic (10 Gbps, 16 streams, infinite duration)
+# Start full mesh traffic (20 Gbps, 32 streams, infinite duration)
 ./iperf3scripts/start-mesh.sh
 
 # Monitor traffic
@@ -56,8 +56,8 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -c' | wc -l
 ## Traffic Profile Compliance
 
 All scripts follow `iperf3-traffic-profile.txt`:
-- **10 Gbps bandwidth** (`-b 10G`)
-- **16 parallel streams** (`-P 16`) 
+- **20 Gbps bandwidth** (`-b 20G`)
+- **16 parallel streams** (`-P 32`) 
 - **Infinite duration** (`-t 0`)
 - **Full mesh between mesh, lb, mg pods**
 - **Cross-node VPC-CNI, same-node SR-IOV**
@@ -91,7 +91,7 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -c' | wc -l
 - **mesh-pod-2**: 169.30.1.20/24 - Optimized iperf3 testing
 - **mesh-pod-3**: 169.30.1.30/24 - Optimized iperf3 testing  
 - **mesh-pod-4**: 169.30.1.40/24 - Optimized iperf3 testing
-- **Performance**: 10 Gbps per connection with unique IPs
+- **Performance**: 20 Gbps per connection with unique IPs
 
 ### Load Balancer BGP Pods - 6 pods
 - **Node1**: lb-bgp-pod-node1-n3/n4/n6 (3 pods)
@@ -111,10 +111,10 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -c' | wc -l
 - All connection logic runs inside pods
 - Successfully handles 4,704 connections (49×48×2)
 
-**✅ 10 Gbps Full Mesh Traffic Active**
-- **Total capacity**: ~235 Tbps theoretical (49 pods × 48 connections × 2 interfaces × 10 Gbps)
-- **VPC-CNI (eth0)**: Cross-node traffic at 10 Gbps per connection
-- **SR-IOV (net1)**: Same-node traffic at 10 Gbps per connection
+**✅ 20 Gbps Full Mesh Traffic Active**
+- **Total capacity**: ~470 Tbps theoretical (49 pods × 48 connections × 2 interfaces × 20 Gbps)
+- **VPC-CNI (eth0)**: Cross-node traffic at 20 Gbps per connection
+- **SR-IOV (net1)**: Same-node traffic at 20 Gbps per connection
 - **Process Management**: Optimized to prevent resource contention
 - **Zero Localhost Impact**: All testing contained within pods
 
@@ -155,7 +155,7 @@ Node2 (ip-100-77-4-183.ec2.internal)
 - **v3.0.0**: Optimized script architecture (2025-12-12)
   - Consolidated to single `start-mesh.sh` script
   - Zero localhost CPU consumption
-  - Increased bandwidth to 10 Gbps per connection
+  - Increased bandwidth to 20 Gbps per connection
   - Successfully handles 4,704 connections (49×48×2)
   
 - **v2.0.0**: Consolidated script organization

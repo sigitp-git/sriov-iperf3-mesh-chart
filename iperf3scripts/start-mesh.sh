@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PROFILE="-b 10G -P 16 -t 0"
+PROFILE="-b 20G -P 32 -t 0"
 
-echo "Starting mesh - minimal localhost CPU"
+echo "Starting mesh - high CPU utilization mode"
 
 # Get all pods
 PODS=($(kubectl get pods --no-headers | grep -E "(mesh-pod|lb-bgp-pod|mg-pod)" | awk '{print $1}'))
