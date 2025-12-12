@@ -36,6 +36,76 @@ networks:
   dsf_301:
     vlan: 301
     ip: "169.30.5.100/24"    # 169.30.5.x subnet
+  
+  # NUMA-specific NADs - DSF VLAN 301/302
+  dsf_301_numa0p0_pf1:
+    vlan: 301
+    ip: "169.30.6.10/24"
+  dsf_301_numa1p0_pf3:
+    vlan: 301
+    ip: "169.30.6.20/24"
+  dsf_302_numa0p1_pf2:
+    vlan: 302
+    ip: "169.30.7.10/24"
+  dsf_302_numa1p1_pf4:
+    vlan: 302
+    ip: "169.30.7.20/24"
+  
+  # NUMA-specific NADs - N3 VLAN 1001/1002
+  n3_1001_numa0p0_pf1:
+    vlan: 1001
+    ip: "169.30.8.10/24"
+  n3_1001_numa1p0_pf3:
+    vlan: 1001
+    ip: "169.30.8.20/24"
+  n3_1002_numa0p1_pf2:
+    vlan: 1002
+    ip: "169.30.9.10/24"
+  n3_1002_numa1p1_pf4:
+    vlan: 1002
+    ip: "169.30.9.20/24"
+  
+  # NUMA-specific NADs - N4 VLAN 201/202
+  n4_201_numa0p0_pf1:
+    vlan: 201
+    ip: "169.30.10.10/24"
+  n4_201_numa1p0_pf3:
+    vlan: 201
+    ip: "169.30.10.20/24"
+  n4_202_numa0p1_pf2:
+    vlan: 202
+    ip: "169.30.11.10/24"
+  n4_202_numa1p1_pf4:
+    vlan: 202
+    ip: "169.30.11.20/24"
+  
+  # NUMA-specific NADs - N4 VLAN 3001/3002
+  n4_3001_numa0p0_pf1:
+    vlan: 3001
+    ip: "169.30.12.10/24"
+  n4_3001_numa1p0_pf3:
+    vlan: 3001
+    ip: "169.30.12.20/24"
+  n4_3002_numa0p1_pf2:
+    vlan: 3002
+    ip: "169.30.13.10/24"
+  n4_3002_numa1p1_pf4:
+    vlan: 3002
+    ip: "169.30.13.20/24"
+  
+  # NUMA-specific NADs - N6 VLAN 2001/2002
+  n6_2001_numa0p0_pf1:
+    vlan: 2001
+    ip: "169.30.14.10/24"
+  n6_2001_numa1p0_pf3:
+    vlan: 2001
+    ip: "169.30.14.20/24"
+  n6_2002_numa0p1_pf2:
+    vlan: 2002
+    ip: "169.30.15.10/24"
+  n6_2002_numa1p1_pf4:
+    vlan: 2002
+    ip: "169.30.15.20/24"
 
 # Pod Configuration
 pods:
