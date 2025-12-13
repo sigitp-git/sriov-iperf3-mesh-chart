@@ -11,7 +11,8 @@ sriov-iperf3-mesh-chart/
 ├── README.md                            # This documentation
 ├── iperf3-traffic-profile.txt           # Traffic profile specification
 ├── iperf3scripts/                       # iperf3 mesh testing scripts
-│   ├── start-mesh.sh                    # Start full mesh traffic (v3.0)
+│   ├── start-mesh.sh                    # Start full mesh traffic (v3.1)
+│   ├── monitor-mesh.sh                  # Monitor all pods (parallel)
 │   └── README.md                        # Script documentation
 ├── templates/                           # Helm templates
 │   ├── network-attachment-definitions.yaml
@@ -29,10 +30,12 @@ sriov-iperf3-mesh-chart/
 
 - ✅ **Complete 49-pod deployment** - mesh, lb-bgp, and mg pods across 2 nodes
 - ✅ **20 Gbps full mesh traffic** - 49 pods × 48 connections × 2 interfaces
+- ✅ **Continuous traffic operation** - No 45-minute dropout, runs indefinitely
 - ✅ **Dual-interface support** - VPC-CNI (eth0) + SR-IOV (net1)
 - ✅ **Zero localhost CPU consumption** - Optimized script architecture
 - ✅ **Minimal kubectl overhead** - Only 49 processes for full mesh
 - ✅ **Traffic profile compliance** - 20 Gbps, 32 streams, infinite duration
+- ✅ **Parallel monitoring** - Fast status checks across all pods
 
 ## Quick Start
 
@@ -102,14 +105,14 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -c' | wc -l
 - **Node1**: mg-pod1-20-node1 (20 pods)
 - **Node2**: mg-pod1-20-node2 + additional pods (13 pods)
 
-## Current Status (2025-12-12)
+## Current Status (2025-12-13)
 
-**✅ Optimized Script Architecture (v3.0)**
-- Consolidated to single `start-mesh.sh` script
-- Zero localhost CPU consumption achieved
-- Single kubectl exec per pod (49 total processes)
-- All connection logic runs inside pods
-- Successfully handles 4,704 connections (49×48×2)
+**✅ Continuous Traffic Operation (v3.1)**
+- Fixed 45-minute traffic dropout issue
+- Added nohup for process persistence
+- Removed blocking wait commands
+- Traffic runs indefinitely without interruption
+- 10-second server startup wait for reliability
 
 **✅ 20 Gbps Full Mesh Traffic Active**
 - **Total capacity**: ~470 Tbps theoretical (49 pods × 48 connections × 2 interfaces × 20 Gbps)
@@ -121,18 +124,17 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -c' | wc -l
 ## Monitoring Examples
 
 ```bash
-# Start and monitor full mesh
-./iperf3scripts/mesh-traffic.sh start
-./iperf3scripts/mesh-monitor.sh continuous 10
+# Start full mesh traffic
+./iperf3scripts/start-mesh.sh
 
-# Check specific pod performance
-./iperf3scripts/mesh-monitor.sh pod mesh-pod-2
+# Monitor all 49 pods (parallel execution)
+./iperf3scripts/monitor-mesh.sh
 
-# Verify zero localhost usage
-./iperf3scripts/mesh-utils.sh verify
+# Watch continuously
+watch -n 5 ./iperf3scripts/monitor-mesh.sh
 
-# Export all logs for analysis
-./iperf3scripts/mesh-monitor.sh export ./analysis-logs
+# Check specific pod
+kubectl exec mesh-pod-2 -- ps aux | grep iperf3 | grep -v defunct | wc -l
 ```
 
 ## Architecture
@@ -151,6 +153,13 @@ Node2 (ip-100-77-4-183.ec2.internal)
 ```
 
 ## Version History
+
+- **v3.1.0**: Continuous traffic operation (2025-12-13)
+  - Fixed 45-minute traffic dropout with nohup
+  - Removed blocking wait commands
+  - Increased server startup wait to 10 seconds
+  - Added parallel monitoring script (monitor-mesh.sh)
+  - Traffic runs indefinitely without interruption
 
 - **v3.0.0**: Optimized script architecture (2025-12-12)
   - Consolidated to single `start-mesh.sh` script

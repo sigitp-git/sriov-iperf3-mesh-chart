@@ -14,7 +14,7 @@ for p in "${PODS[@]}"; do
     kubectl exec $p -- sh -c "pkill -9 iperf3; iperf3 -s -p 5201 -D; iperf3 -s -p 5202 -D" &
 done
 wait
-sleep 3
+sleep 10
 
 # Create target list file
 echo "Building target list..."
@@ -36,12 +36,11 @@ for src in "${PODS[@]}"; do
             ip=\${temp%%:*}
             net1=\${temp#*:}
             
-            iperf3 -c \$ip -p 5201 $PROFILE >/tmp/v_\$pod.log 2>&1 &
-            [ \"\$net1\" != \"\" ] && iperf3 -c \$net1 -p 5202 $PROFILE >/tmp/s_\$pod.log 2>&1 &
+            nohup iperf3 -c \$ip -p 5201 $PROFILE >/tmp/v_\$pod.log 2>&1 &
+            [ \"\$net1\" != \"\" ] && nohup iperf3 -c \$net1 -p 5202 $PROFILE >/tmp/s_\$pod.log 2>&1 &
         done
     " &
     echo "$src"
 done
 
-wait
 echo "Mesh started"

@@ -66,6 +66,16 @@ Check active connections in a pod:
 kubectl exec mesh-pod-2 -- ps | grep iperf3 | grep -v defunct | wc -l
 ```
 
+Monitor all 49 pods (parallel execution):
+```bash
+./iperf3scripts/monitor-mesh.sh
+```
+
+Watch continuously:
+```bash
+watch -n 5 ./iperf3scripts/monitor-mesh.sh
+```
+
 Expected: ~96 active iperf3 processes per pod (48 VPC-CNI + 48 SR-IOV)
 
 ## Technical Details
@@ -101,6 +111,10 @@ done
 
 ## Troubleshooting
 
+**Script hangs**: Fixed in v3.1 - removed blocking `wait` commands. Script now completes in ~15 seconds.
+
+**Traffic stops after 45 minutes**: Fixed in v3.1 - added `nohup` to detach iperf3 processes from shell lifecycle.
+
 **Defunct processes**: Harmless zombie processes from previous failed attempts. They don't consume resources and will be cleaned when pods restart.
 
 **No traffic**: Check if servers are running:
@@ -112,6 +126,12 @@ kubectl exec mesh-pod-2 -- ps | grep 'iperf3 -s'
 
 ## Version History
 
+- **v3.1** (2025-12-13): Fixed continuous traffic issues
+  - Added `nohup` to prevent process termination when shell exits
+  - Removed blocking `wait` commands that caused infinite hangs
+  - Increased server startup wait from 3 to 10 seconds
+  - Traffic now runs continuously without 45-minute dropout
+  
 - **v3.0** (2025-12-12): Optimized for zero localhost CPU consumption + 20 Gbps bandwidth
   - Single kubectl exec per pod
   - All connection logic runs inside pods
