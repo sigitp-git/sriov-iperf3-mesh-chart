@@ -148,8 +148,8 @@ image:
 # Resource Configuration
 resources:
   limits:
-    memory: "512Mi"
+    memory: "2Gi"
     cpu: "4"
   requests:
-    memory: "256Mi"
+    memory: "1Gi"
     cpu: "4"
