@@ -44,6 +44,40 @@ Starts full mesh iperf3 traffic across all 49 pods.
 - Network throughput: 20 Gbps per pod pair per interface
 - Total mesh capacity: ~470 Tbps (49 pods × 48 connections × 2 interfaces × 20 Gbps)
 
+### `add-cpu-load.sh`
+
+Adds additional iperf3 traffic to maximize pod CPU utilization without killing existing traffic.
+
+**Usage:**
+```bash
+./iperf3scripts/add-cpu-load.sh
+```
+
+**What it does:**
+1. Starts 10 additional iperf3 servers per pod (ports 5203-5212)
+2. Adds 10 connections per pod pair (5 VPC-CNI + 5 SR-IOV)
+3. Creates 864 additional iperf3 processes per pod
+4. Does NOT interfere with existing traffic on ports 5201-5202
+
+**Performance:**
+- Total processes per pod: ~960 (96 original + 864 new)
+- Multiplies CPU load by ~11x
+- Preserves all existing mesh traffic
+
+### `monitor-mesh.sh`
+
+Monitor iperf3 processes across all pods with parallel execution.
+
+**Usage:**
+```bash
+./iperf3scripts/monitor-mesh.sh
+```
+
+**What it does:**
+- Checks all 49 pods in parallel
+- Shows active iperf3 process count per pod
+- Expected: ~96 processes (baseline) or ~960 processes (with add-cpu-load.sh)
+
 ## Architecture
 
 ```
@@ -76,7 +110,9 @@ Watch continuously:
 watch -n 5 ./iperf3scripts/monitor-mesh.sh
 ```
 
-Expected: ~96 active iperf3 processes per pod (48 VPC-CNI + 48 SR-IOV)
+Expected process counts:
+- **Baseline (start-mesh.sh only)**: ~96 active iperf3 processes per pod (48 VPC-CNI + 48 SR-IOV)
+- **High CPU load (with add-cpu-load.sh)**: ~960 active iperf3 processes per pod (96 original + 864 additional)
 
 ## Technical Details
 
